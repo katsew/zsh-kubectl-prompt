@@ -61,7 +61,11 @@ function _zsh_kubectl_prompt_precmd() {
     [[ -z "$ns" ]] && ns="default"
 
     zstyle -s ':zsh-kubectl-prompt:' separator separator
-    ZSH_KUBECTL_PROMPT="${context}${separator}${ns}"
+
+    # I usually use GKE, so beautify it.
+    gke_project_name=`echo $context | cut -f 2 -d '_'`
+    cluster_name=`echo $context | cut -f 4 -d '_'`
+    ZSH_KUBECTL_PROMPT="[${gke_project_name}/${cluster_name}] (${ns})"
 
     return 0
 }
